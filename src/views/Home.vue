@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div class="container">
     <ProductFilter></ProductFilter>
     <main class="my-8">
       <div class="container mx-auto px-6">
