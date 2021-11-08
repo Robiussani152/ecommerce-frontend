@@ -128,6 +128,7 @@
               </div>
               <button
                 v-if="is_auth"
+                @click="placeOrder()"
                 type="button"
                 class="
                   flex
@@ -208,6 +209,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { place_order } from "@/api/urls.js";
 export default {
   name: "Cart",
   data() {
@@ -246,6 +248,20 @@ export default {
       });
       this.form.total_amount = total_amount;
       this.$store.commit("set_total_amount", total_amount);
+    },
+    placeOrder() {
+      let self = this;
+      self.$store.commit("set_is_loading", true);
+      self.$axios
+        .post(place_order, self.form)
+        .then((res) => {
+          this.$toastr.s("Order placed success!");
+        })
+        .finally((res) => {
+          self.$store.commit("remove_all_cart_item");
+          self.$store.commit("set_is_loading", false);
+          self.$router.push({ name: "MyOrders" });
+        });
     },
   },
   watch: {
