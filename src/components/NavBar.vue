@@ -75,8 +75,11 @@
                 </a>
                 <ul class="dropdown-content bg-gray-900">
                   <li><router-link to="/my-orders">My Orders</router-link></li>
-                  <li><a href="">Logout</a></li>
                 </ul>
+              </li>
+
+              <li>
+                <a href="#" @click.prevent="$emit('logoutUser')">Logout</a>
               </li>
             </ul>
           </div>

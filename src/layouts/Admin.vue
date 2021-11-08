@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <AdminNavBar />
+    <AdminNavBar @logoutUser="$emit('logoutUser')" />
     <slot />
   </div>
 </template>

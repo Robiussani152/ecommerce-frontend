@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <NavBar></NavBar>
+    <NavBar @logoutUser="$emit('logoutUser')" />
     <slot />
-    <Footer></Footer>
+    <Footer />
   </div>
 </template>
 

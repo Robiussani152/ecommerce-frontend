@@ -5,6 +5,7 @@ import store from "./store";
 import "./assets/css/tailwind.css";
 import "./plugin/axios";
 import "./plugin/vform";
+import "./plugin/toastr";
 
 Vue.config.productionTip = false;
 

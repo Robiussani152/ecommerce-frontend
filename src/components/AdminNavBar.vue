@@ -53,7 +53,9 @@
                   <li>Test notification 4</li>
                 </ul>
               </li>
-              <li><a href="">Logout</a></li>
+              <li>
+                <a href="@" @click.prevent="$emit('logoutUser')">Logout</a>
+              </li>
             </ul>
           </div>
         </div>
@@ -65,6 +67,7 @@
 <script>
 export default {
   name: "AdminNavBar",
+  methods: {},
 };
 </script>
 
