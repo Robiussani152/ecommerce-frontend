@@ -6,7 +6,9 @@ import "./assets/css/tailwind.css";
 import "./plugin/axios";
 import "./plugin/vform";
 import "./plugin/toastr";
+import "./plugin/vue-swal";
 
+Vue.component("pagination", require("laravel-vue-pagination"));
 Vue.config.productionTip = false;
 
 new Vue({

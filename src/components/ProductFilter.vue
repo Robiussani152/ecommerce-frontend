@@ -5,10 +5,10 @@
         <div class="flex gap-2 flex-col md:flex-row center pt-3">
           <div class="relative flex-grow">
             <input
-              id="departure"
-              value="Lille"
-              name="departure"
+              id="name"
+              name="name"
               type="text"
+              v-model="form.query_string"
               class="
                 peer
                 h-10
@@ -24,7 +24,7 @@
               placeholder="quelquechose"
             />
             <label
-              for="departure"
+              for="name"
               class="
                 absolute
                 left-2
@@ -45,6 +45,7 @@
             <select
               name="price_order"
               id="price_order"
+              v-model="form.order"
               class="
                 peer
                 h-10
@@ -57,8 +58,8 @@
                 focus:outline-none focus:border-red-600 focus:border-2
               "
             >
-              <option value="">High to low</option>
-              <option value="">Low to High</option>
+              <option value="desc">High to low</option>
+              <option value="asc">Low to High</option>
             </select>
             <label
               for="departure"
@@ -81,6 +82,7 @@
         </div>
         <div class="flex justify-center mt-6">
           <button
+            @click="productSearch"
             class="
               bg-gray-900
               text-white
@@ -102,6 +104,20 @@
 <script>
 export default {
   name: "ProductFilter",
+  data() {
+    return {
+      form: {
+        query_string: "",
+        order_col: "price",
+        order: "asc",
+      },
+    };
+  },
+  methods: {
+    productSearch() {
+      this.$emit("search", this.form);
+    },
+  },
 };
 </script>
 

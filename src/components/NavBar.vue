@@ -18,15 +18,12 @@
               space-x-12
             "
           >
-            <li>
-              <router-link to="/" class="hover:text-gray-200">Home</router-link>
-            </li>
-            <li>
+            <li v-if="!is_auth">
               <router-link to="/login" class="hover:text-gray-200"
                 >Login</router-link
               >
             </li>
-            <li>
+            <li v-if="!is_auth">
               <router-link to="/register" class="hover:text-gray-200"
                 >Register</router-link
               >
@@ -56,7 +53,7 @@
                   </svg>
                 </router-link>
               </li>
-              <li class="dropdown">
+              <li class="dropdown" v-if="is_auth">
                 <a class="flex items-center hover:text-gray-200" href="#">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +75,7 @@
                 </ul>
               </li>
 
-              <li>
+              <li v-if="is_auth">
                 <a href="#" @click.prevent="$emit('logoutUser')">Logout</a>
               </li>
             </ul>
@@ -90,8 +87,18 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "NavBar",
+  data() {
+    return {};
+  },
+  computed: {
+    ...mapGetters({
+      user: "get_user_info",
+      is_auth: "get_autheticated",
+    }),
+  },
 };
 </script>
 

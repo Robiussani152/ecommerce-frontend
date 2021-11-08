@@ -5,7 +5,10 @@
     </div>
     <div class="flex items-center justify-center">
       <div class="w-full max-w-lg">
-        <form class="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4">
+        <form
+          @submit.prevent="submitForm()"
+          class="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4"
+        >
           <div class="mb-4">
             <label class="block text-gray-700 text-sm font-normal mb-2">
               Product name
@@ -25,10 +28,12 @@
               "
               name="name"
               type="text"
+              v-model="form.name"
               required
               autofocus
               placeholder="Product name"
             />
+            <HasError :form="form" field="name" />
           </div>
           <div class="mb-4">
             <label class="block text-gray-700 text-sm font-normal mb-2">
@@ -52,7 +57,9 @@
               required
               autofocus
               placeholder="Product price"
+              v-model="form.price"
             />
+            <HasError :form="form" field="price" />
           </div>
           <div class="mb-4">
             <label class="block text-gray-700 text-sm font-normal mb-2">
@@ -76,13 +83,16 @@
               required
               autofocus
               placeholder="Product quantity"
+              v-model="form.quantity"
             />
+            <HasError :form="form" field="quantity" />
           </div>
           <div class="mb-4">
             <label class="block text-gray-700 text-sm font-normal mb-2">
               Description
             </label>
             <textarea
+              v-model="form.description"
               class="
                 shadow
                 appearance-none
@@ -101,6 +111,7 @@
               placeholder="Enter description...."
               rows="5"
             ></textarea>
+            <HasError :form="form" field="description" />
           </div>
           <div class="mb-4">
             <label class="block text-gray-700 text-sm font-normal mb-2">
@@ -121,7 +132,9 @@
               "
               type="file"
               name="image"
+              @change="handleFileUpload"
             />
+            <HasError :form="form" field="image" />
           </div>
 
           <div class="flex items-center justify-between">
@@ -160,8 +173,39 @@
 </template>
 
 <script>
+import { product } from "@/api/urls.js";
+import Form from "vform";
 export default {
   name: "CreateProduct",
+  data() {
+    return {
+      form: new Form({
+        name: "",
+        description: "",
+        quantity: "",
+        price: "",
+        image: "",
+      }),
+    };
+  },
+
+  methods: {
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      this.form.image = file;
+    },
+    submitForm() {
+      let self = this;
+      self.$store.commit("set_is_loading", true);
+      self.form
+        .post(product)
+        .then((res) => {})
+        .finally((res) => {
+          self.$store.commit("set_is_loading", false);
+          self.$router.push({ name: "ProductsList" });
+        });
+    },
+  },
 };
 </script>
 

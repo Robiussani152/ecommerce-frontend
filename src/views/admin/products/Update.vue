@@ -5,7 +5,10 @@
     </div>
     <div class="flex items-center justify-center">
       <div class="w-full max-w-lg">
-        <form class="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4">
+        <form
+          @submit.prevent="submitForm()"
+          class="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4"
+        >
           <div class="mb-4">
             <label class="block text-gray-700 text-sm font-normal mb-2">
               Product name
@@ -25,10 +28,12 @@
               "
               name="name"
               type="text"
+              v-model="form.name"
               required
               autofocus
               placeholder="Product name"
             />
+            <HasError :form="form" field="name" />
           </div>
           <div class="mb-4">
             <label class="block text-gray-700 text-sm font-normal mb-2">
@@ -52,7 +57,9 @@
               required
               autofocus
               placeholder="Product price"
+              v-model="form.price"
             />
+            <HasError :form="form" field="price" />
           </div>
           <div class="mb-4">
             <label class="block text-gray-700 text-sm font-normal mb-2">
@@ -76,13 +83,16 @@
               required
               autofocus
               placeholder="Product quantity"
+              v-model="form.quantity"
             />
+            <HasError :form="form" field="quantity" />
           </div>
           <div class="mb-4">
             <label class="block text-gray-700 text-sm font-normal mb-2">
               Description
             </label>
             <textarea
+              v-model="form.description"
               class="
                 shadow
                 appearance-none
@@ -101,27 +111,7 @@
               placeholder="Enter description...."
               rows="5"
             ></textarea>
-          </div>
-          <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-normal mb-2">
-              Image
-            </label>
-            <input
-              class="
-                shadow
-                appearance-none
-                border
-                rounded
-                w-full
-                py-2
-                px-3
-                text-gray-700
-                leading-tight
-                focus:outline-none focus:shadow-outline
-              "
-              type="file"
-              name="image"
-            />
+            <HasError :form="form" field="description" />
           </div>
 
           <div class="flex items-center justify-between">
@@ -160,8 +150,48 @@
 </template>
 
 <script>
+import { product } from "@/api/urls.js";
+import Form from "vform";
 export default {
   name: "UpdateProduct",
+  data() {
+    return {
+      form: new Form({
+        name: "",
+        description: "",
+        quantity: "",
+        price: "",
+        image: "",
+      }),
+    };
+  },
+  mounted() {
+    this.getProductData();
+  },
+  methods: {
+    getProductData() {
+      let self = this;
+      self.$axios.get(`${product}/${self.$route.params.id}`).then((res) => {
+        let data = res.data.data;
+        self.form.name = data.name;
+        self.form.description = data.name;
+        self.form.price = data.price;
+        self.form.quantity = data.quantity;
+        self.form.image = data.image;
+      });
+    },
+    submitForm() {
+      let self = this;
+      self.$store.commit("set_is_loading", true);
+      self.form
+        .put(`${product}/${self.$route.params.id}`)
+        .then((res) => {})
+        .finally((res) => {
+          self.$store.commit("set_is_loading", false);
+          self.$router.push({ name: "ProductsList" });
+        });
+    },
+  },
 };
 </script>
 
