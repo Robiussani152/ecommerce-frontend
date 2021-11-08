@@ -2,7 +2,10 @@
   <div class="container">
     <div class="flex items-center justify-center">
       <div class="w-full max-w-md">
-        <form class="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4">
+        <form
+          @submit.prevent="submitForm()"
+          class="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4"
+        >
           <!-- @csrf -->
           <div
             class="
@@ -14,7 +17,7 @@
               mb-4
             "
           >
-            Ecommerce Admin Login
+            Admin Login
           </div>
           <div class="mb-4">
             <label
@@ -43,6 +46,7 @@
               autofocus
               placeholder="Email"
             />
+            <HasError :form="form" field="email" />
           </div>
           <div class="mb-6">
             <label
@@ -72,6 +76,7 @@
               required
               autocomplete="current-password"
             />
+            <HasError :form="form" field="password" />
           </div>
           <div class="flex items-center justify-between">
             <button
@@ -98,8 +103,8 @@
                 text-sm text-blue-500
                 hover:text-blue-800
               "
-              to="/register"
-              >Create Account</router-link
+              to="/"
+              >Back to home</router-link
             >
           </div>
         </form>
@@ -109,15 +114,29 @@
 </template>
 
 <script>
+import { login } from "@/api/urls.js";
+import Form from "vform";
 export default {
   name: "AdminLogin",
   data() {
     return {
-      form: {
+      form: new Form({
         email: "",
         password: "",
-      },
+      }),
     };
+  },
+  methods: {
+    submitForm() {
+      let self = this;
+      self.form.post(login).then((res) => {
+        if (res.data.status == "success") {
+          self.$store.commit("insert_access_token", res.data.data.access_token);
+          self.$store.commit("add_user_info", res.data.data.user);
+          self.$router.push({ name: "ProductsList" });
+        }
+      });
+    },
   },
 };
 </script>

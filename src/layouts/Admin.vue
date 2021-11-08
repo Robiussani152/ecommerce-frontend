@@ -1,13 +1,15 @@
 <template>
   <div id="app">
-    <h1>Admin layouts</h1>
+    <AdminNavBar />
     <slot />
   </div>
 </template>
 
 <script>
+import AdminNavBar from "@/components/AdminNavBar.vue";
 export default {
   name: "AdminLayout",
+  components: { AdminNavBar },
 };
 </script>
 
