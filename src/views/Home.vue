@@ -25,6 +25,8 @@
               v-bind:style="{ backgroundImage: 'url(' + product.image + ')' }"
             >
               <button
+                @click="addToCart(product.id)"
+                type="button"
                 class="
                   p-2
                   rounded-full
@@ -106,6 +108,19 @@ export default {
     searchResult(e) {
       this.form = e;
       this.getAllProducts();
+    },
+    addToCart(pId) {
+      let product = this.products.data.find((item) => item.id == pId);
+      let data = {
+        product_id: product.id,
+        price: product.price,
+        quantity: 1,
+        total_price: product.price,
+        image: product.image,
+        name: product.name,
+      };
+      this.$store.commit("set_cart_item", data);
+      this.$toastr.s("Product added to the cart!");
     },
   },
 };

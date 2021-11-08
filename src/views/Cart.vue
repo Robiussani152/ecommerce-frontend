@@ -28,77 +28,30 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr v-for="(item, index) in form.items" :key="index">
               <td class="hidden pb-4 md:table-cell">
                 <a href="#">
-                  <img
-                    src="https://limg.app/i/Calm-Cormorant-Catholic-Pinball-Blaster-yM4oub.jpeg"
-                    class="w-20 rounded"
-                    alt="Thumbnail"
-                  />
+                  <img :src="item.image" class="w-20 rounded" alt="Thumbnail" />
                 </a>
               </td>
               <td>
-                <a href="#">
-                  <p class="mb-2 md:ml-4">Earphone</p>
-                  <form action="" method="POST">
-                    <button type="submit" class="text-gray-700 md:ml-4">
-                      <small>(Remove item)</small>
-                    </button>
-                  </form>
-                </a>
+                <p class="mb-2 md:ml-4">{{ item.name }}</p>
+                <button
+                  @click="removeItem(index)"
+                  type="button"
+                  class="text-gray-700 md:ml-4"
+                >
+                  <small>(Remove item)</small>
+                </button>
               </td>
               <td class="justify-center md:justify-end md:flex mt-6">
                 <div class="w-20 h-10">
                   <div class="relative flex flex-row w-full h-8">
                     <input
                       type="number"
-                      value="2"
-                      class="
-                        w-full
-                        font-semibold
-                        text-center text-gray-700
-                        bg-gray-200
-                        outline-none
-                        focus:outline-none
-                        hover:text-black
-                        focus:text-black
-                      "
-                    />
-                  </div>
-                </div>
-              </td>
-              <td class="hidden text-right md:table-cell">
-                <span class="text-sm lg:text-base font-medium"> 10.00€ </span>
-              </td>
-              <td class="text-right">
-                <span class="text-sm lg:text-base font-medium"> 20.00€ </span>
-              </td>
-            </tr>
-            <tr>
-              <td class="hidden pb-4 md:table-cell">
-                <a href="#">
-                  <img
-                    src="https://limg.app/i/Cute-Constrictor-Super-Sexy-Military-Enforcer-W7mvBp.png"
-                    class="w-20 rounded"
-                    alt="Thumbnail"
-                  />
-                </a>
-              </td>
-              <td>
-                <p class="mb-2 md:ml-4">Tesla Model 3</p>
-                <form action="" method="POST">
-                  <button type="submit" class="text-gray-700 md:ml-4">
-                    <small>(Remove item)</small>
-                  </button>
-                </form>
-              </td>
-              <td class="justify-center md:justify-end md:flex md:mt-4">
-                <div class="w-20 h-10">
-                  <div class="relative flex flex-row w-full h-8">
-                    <input
-                      type="number"
-                      value="3"
+                      v-model="item.quantity"
+                      @keyup="calculateTotalAmount()"
+                      @change="calculateTotalAmount()"
                       class="
                         w-full
                         font-semibold
@@ -115,58 +68,13 @@
               </td>
               <td class="hidden text-right md:table-cell">
                 <span class="text-sm lg:text-base font-medium">
-                  49,600.01€
+                  {{ item.price }}
                 </span>
               </td>
               <td class="text-right">
                 <span class="text-sm lg:text-base font-medium">
-                  148,800.03€
+                  {{ item.total_price }}
                 </span>
-              </td>
-            </tr>
-            <tr>
-              <td class="hidden pb-4 md:table-cell">
-                <a href="#">
-                  <img
-                    src="https://limg.app/i/Successful-Spider-Biblical-Mutant---Total-War-lKoE7D.jpeg"
-                    class="w-20 rounded"
-                    alt="Thumbnail"
-                  />
-                </a>
-              </td>
-              <td>
-                <p class="mb-2 md:ml-4">Bic 4 colour pen</p>
-                <form action="" method="POST">
-                  <button type="submit" class="text-gray-700 md:ml-4">
-                    <small>(Remove item)</small>
-                  </button>
-                </form>
-              </td>
-              <td class="justify-center md:justify-end md:flex md:mt-8">
-                <div class="w-20 h-10">
-                  <div class="relative flex flex-row w-full h-8">
-                    <input
-                      type="number"
-                      value="5"
-                      class="
-                        w-full
-                        font-semibold
-                        text-center text-gray-700
-                        bg-gray-200
-                        outline-none
-                        focus:outline-none
-                        hover:text-black
-                        focus:text-black
-                      "
-                    />
-                  </div>
-                </div>
-              </td>
-              <td class="hidden text-right md:table-cell">
-                <span class="text-sm lg:text-base font-medium"> 1.50€ </span>
-              </td>
-              <td class="text-right">
-                <span class="text-sm lg:text-base font-medium"> 7.50€ </span>
               </td>
             </tr>
           </tbody>
@@ -182,7 +90,10 @@
                 If you have some information for the seller you can leave them
                 in the box below
               </p>
-              <textarea class="w-full h-24 p-2 bg-gray-100 rounded"></textarea>
+              <textarea
+                v-model="form.instruction"
+                class="w-full h-24 p-2 bg-gray-100 rounded"
+              ></textarea>
             </div>
           </div>
           <div class="lg:px-2 lg:w-1/2">
@@ -212,45 +123,81 @@
                     text-center text-gray-900
                   "
                 >
-                  17,859.3€
+                  {{ form.total_amount }}
                 </div>
               </div>
-              <a href="#">
-                <button
-                  class="
-                    flex
-                    justify-center
-                    w-full
-                    px-10
-                    py-3
-                    mt-6
-                    font-medium
-                    text-white
-                    uppercase
-                    bg-gray-800
-                    rounded-full
-                    shadow
-                    item-center
-                    hover:bg-gray-700
-                    focus:shadow-outline focus:outline-none
-                  "
+              <button
+                v-if="is_auth"
+                type="button"
+                class="
+                  flex
+                  justify-center
+                  w-full
+                  px-10
+                  py-3
+                  mt-6
+                  font-medium
+                  text-white
+                  uppercase
+                  bg-gray-800
+                  rounded-full
+                  shadow
+                  item-center
+                  hover:bg-gray-700
+                  focus:shadow-outline focus:outline-none
+                "
+              >
+                <svg
+                  aria-hidden="true"
+                  data-prefix="far"
+                  data-icon="credit-card"
+                  class="w-8"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 576 512"
                 >
-                  <svg
-                    aria-hidden="true"
-                    data-prefix="far"
-                    data-icon="credit-card"
-                    class="w-8"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 576 512"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M527.9 32H48.1C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48.1 48h479.8c26.6 0 48.1-21.5 48.1-48V80c0-26.5-21.5-48-48.1-48zM54.1 80h467.8c3.3 0 6 2.7 6 6v42H48.1V86c0-3.3 2.7-6 6-6zm467.8 352H54.1c-3.3 0-6-2.7-6-6V256h479.8v170c0 3.3-2.7 6-6 6zM192 332v40c0 6.6-5.4 12-12 12h-72c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h72c6.6 0 12 5.4 12 12zm192 0v40c0 6.6-5.4 12-12 12H236c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h136c6.6 0 12 5.4 12 12z"
-                    />
-                  </svg>
-                  <span class="ml-2 mt-5px">Place Order</span>
-                </button>
-              </a>
+                  <path
+                    fill="currentColor"
+                    d="M527.9 32H48.1C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48.1 48h479.8c26.6 0 48.1-21.5 48.1-48V80c0-26.5-21.5-48-48.1-48zM54.1 80h467.8c3.3 0 6 2.7 6 6v42H48.1V86c0-3.3 2.7-6 6-6zm467.8 352H54.1c-3.3 0-6-2.7-6-6V256h479.8v170c0 3.3-2.7 6-6 6zM192 332v40c0 6.6-5.4 12-12 12h-72c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h72c6.6 0 12 5.4 12 12zm192 0v40c0 6.6-5.4 12-12 12H236c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h136c6.6 0 12 5.4 12 12z"
+                  />
+                </svg>
+                <span class="ml-2 mt-5px">Place Order</span>
+              </button>
+              <router-link
+                to="/login"
+                v-else
+                class="
+                  flex
+                  justify-center
+                  w-full
+                  px-10
+                  py-3
+                  mt-6
+                  font-medium
+                  text-white
+                  uppercase
+                  bg-gray-800
+                  rounded-full
+                  shadow
+                  item-center
+                  hover:bg-gray-700
+                  focus:shadow-outline focus:outline-none
+                "
+              >
+                <svg
+                  aria-hidden="true"
+                  data-prefix="far"
+                  data-icon="credit-card"
+                  class="w-8"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 576 512"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M527.9 32H48.1C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48.1 48h479.8c26.6 0 48.1-21.5 48.1-48V80c0-26.5-21.5-48-48.1-48zM54.1 80h467.8c3.3 0 6 2.7 6 6v42H48.1V86c0-3.3 2.7-6 6-6zm467.8 352H54.1c-3.3 0-6-2.7-6-6V256h479.8v170c0 3.3-2.7 6-6 6zM192 332v40c0 6.6-5.4 12-12 12h-72c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h72c6.6 0 12 5.4 12 12zm192 0v40c0 6.6-5.4 12-12 12H236c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h136c6.6 0 12 5.4 12 12z"
+                  />
+                </svg>
+                <span class="ml-2 mt-5px">Login/Register</span>
+              </router-link>
             </div>
           </div>
         </div>
@@ -260,8 +207,52 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "Cart",
+  data() {
+    return {
+      form: {
+        items: [],
+        total_amount: 0,
+        instruction: "",
+      },
+    };
+  },
+  computed: {
+    ...mapGetters({
+      user: "get_user_info",
+      is_auth: "get_autheticated",
+    }),
+  },
+  mounted() {
+    this.form.items = this.$store.getters["get_cart_items"];
+    this.form.total_amount = this.$store.getters["get_cart_total_amount"];
+    this.form.instruction = this.$store.getters["get_cart_instruction"];
+  },
+  methods: {
+    removeItem(index) {
+      this.form.items.splice(index, 1);
+      this.calculateTotalAmount();
+    },
+    calculateTotalAmount() {
+      let total_amount = 0;
+      this.$store.commit("remove_all_cart_item");
+      this.form.items.forEach((item, index) => {
+        let item_total = item.quantity * item.price;
+        this.form.items[index].total_price = item_total;
+        total_amount += item_total;
+        this.$store.commit("set_cart_item", this.form.items[index]);
+      });
+      this.form.total_amount = total_amount;
+      this.$store.commit("set_total_amount", total_amount);
+    },
+  },
+  watch: {
+    "form.instruction": function (newVal, oldVal) {
+      this.$store.commit("set_cart_instruction", newVal);
+    },
+  },
 };
 </script>
 
