@@ -60,7 +60,20 @@
 <script>
 export default {
   name: "AdminNavBar",
-  methods: {},
+  mounted() {
+    this.listenForNotification();
+  },
+  methods: {
+    listenForNotification() {
+      let self = this;
+      let pusher = new Pusher(1131560, {
+        cluster: "ap2",
+        encrypted: false,
+      });
+      let channel = pusher.subscribe("private-App.Models.User.1");
+      console.log(channel);
+    },
+  },
 };
 </script>
 

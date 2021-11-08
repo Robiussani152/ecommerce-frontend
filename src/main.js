@@ -7,6 +7,7 @@ import "./plugin/axios";
 import "./plugin/vform";
 import "./plugin/toastr";
 import "./plugin/vue-swal";
+import "./plugin/pusher.js";
 
 Vue.component("pagination", require("laravel-vue-pagination"));
 Vue.config.productionTip = false;
