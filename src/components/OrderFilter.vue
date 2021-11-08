@@ -8,7 +8,7 @@
               id="name"
               name="name"
               type="text"
-              v-model="form.query_string"
+              v-model="form.invoice_no"
               class="
                 peer
                 h-10
@@ -21,7 +21,7 @@
                 focus:outline-none focus:border-red-600 focus:border-2
                 p-3
               "
-              placeholder="Product name"
+              placeholder="Invoice No"
             />
             <label
               for="name"
@@ -38,14 +38,14 @@
                 peer-placeholder-shown:top-2
                 peer-focus:-top-2.5 peer-focus:text-red-600 peer-focus:text-sm
               "
-              >Product name :</label
+              >Invoice No :</label
             >
           </div>
           <div class="relative flex-none w-80">
             <select
-              name="price_order"
-              id="price_order"
-              v-model="form.order"
+              name="status"
+              id="status"
+              v-model="form.status"
               class="
                 peer
                 h-10
@@ -58,11 +58,16 @@
                 focus:outline-none focus:border-red-600 focus:border-2
               "
             >
-              <option value="desc">High to low</option>
-              <option value="asc">Low to High</option>
+              <option value="">All</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+              <option value="processing">Processing</option>
+              <option value="shipped">Shipped</option>
+              <option value="delivered">Delivered</option>
             </select>
             <label
-              for="departure"
+              for="status"
               class="
                 absolute
                 left-2
@@ -76,13 +81,13 @@
                 peer-placeholder-shown:top-2
                 peer-focus:-top-2.5 peer-focus:text-red-600 peer-focus:text-sm
               "
-              >Price Order :</label
+              >Status :</label
             >
           </div>
         </div>
         <div class="flex justify-center mt-6">
           <button
-            @click="productSearch"
+            @click="orderSearch"
             class="
               bg-gray-900
               text-white
@@ -103,18 +108,17 @@
 
 <script>
 export default {
-  name: "ProductFilter",
+  name: "OrderFilter",
   data() {
     return {
       form: {
-        query_string: "",
-        order_col: "price",
-        order: "asc",
+        invoice_no: "",
+        status: "",
       },
     };
   },
   methods: {
-    productSearch() {
+    orderSearch() {
       this.$emit("search", this.form);
     },
   },

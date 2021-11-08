@@ -105,48 +105,14 @@
           </div>
         </div>
       </div>
-      <div class="flex-1">
-        <h1 v-if="order.histories && order.histories.length > 0">
-          Edit histories
-        </h1>
-        <template v-for="(history, index) in order.histories">
-          <EditHistories :order="history.order_data" :key="index" />
-        </template>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { order_details } from "@/api/urls.js";
-import EditHistories from "@/components/EditHistories";
 export default {
-  name: "OrderDetails",
-  components: {
-    EditHistories,
-  },
-  data() {
-    return {
-      order: {},
-    };
-  },
-  mounted() {
-    this.getOrder();
-  },
-  methods: {
-    getOrder() {
-      let self = this;
-      self.$store.commit("set_is_loading", true);
-      self.$axios
-        .get(`${order_details}/${self.$route.params.id}`)
-        .then((res) => {
-          self.order = res.data.data;
-        })
-        .finally((res) => {
-          self.$store.commit("set_is_loading", false);
-        });
-    },
-  },
+  name: "EditHistories",
+  props: ["order"],
 };
 </script>
 

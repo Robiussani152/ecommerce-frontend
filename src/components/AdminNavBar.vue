@@ -30,13 +30,6 @@
                 >Orders</router-link
               >
             </li>
-            <li>
-              <router-link
-                to="/admin/delivered-order"
-                class="hover:text-gray-200"
-                >Delivered Orders</router-link
-              >
-            </li>
           </ul>
           <!-- Header Icons -->
           <div>
