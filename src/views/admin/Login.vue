@@ -130,14 +130,20 @@ export default {
     submitForm() {
       let self = this;
       self.$store.commit("set_is_loading", true);
-      self.form.post(login).then((res) => {
-        self.$store.commit("set_is_loading", false);
-        if (res.data.status == "success") {
-          self.$store.commit("insert_access_token", res.data.data.access_token);
-          self.$store.commit("add_user_info", res.data.data.user);
-          self.$router.push({ name: "ProductsList" });
-        }
-      });
+      self.form
+        .post(login)
+        .then((res) => {
+          self.$store.commit("set_is_loading", false);
+          if (res.data.status == "success") {
+            self.$store.commit(
+              "insert_access_token",
+              res.data.data.access_token
+            );
+            self.$store.commit("add_user_info", res.data.data.user);
+            self.$router.push({ name: "ProductsList" });
+          }
+        })
+        .finally((res) => self.$store.commit("set_is_loading", false));
     },
   },
 };

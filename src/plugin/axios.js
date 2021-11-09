@@ -1,6 +1,8 @@
 import Vue from "vue";
 import axios from "axios";
 import store from "../store";
+import router from "@/router";
+
 Vue.use({
   install(Vue) {
     Vue.prototype.$axios = axios;
@@ -22,3 +24,17 @@ Vue.prototype.$axios.interceptors.request.use((config) => {
   }
   return config;
 });
+
+Vue.prototype.$axios.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    if (error.response.status == 401) {
+      console.log("data check");
+      store.commit("remove_auth_state");
+      router.push("/");
+    }
+    return Promise.reject(error);
+  }
+);
