@@ -40,10 +40,12 @@
                 </a>
 
                 <ul class="dropdown-content bg-gray-900">
-                  <li>Test notification 1</li>
-                  <li>Test notification 2</li>
-                  <li>Test notification 3</li>
-                  <li>Test notification 4</li>
+                  <li
+                    v-for="(notification, index) in notifications"
+                    :key="index"
+                  >
+                    {{ notification.message }}
+                  </li>
                 </ul>
               </li>
               <li>
@@ -60,18 +62,25 @@
 <script>
 export default {
   name: "AdminNavBar",
+  data() {
+    return {
+      notifications: [],
+    };
+  },
   mounted() {
     this.listenForNotification();
   },
   methods: {
     listenForNotification() {
       let self = this;
-      let pusher = new Pusher(1131560, {
+      let pusher = new Pusher("16f5560676e67a8ddb31", {
         cluster: "ap2",
         encrypted: false,
       });
-      let channel = pusher.subscribe("private-App.Models.User.1");
-      console.log(channel);
+      let channel = pusher.subscribe("order-placed");
+      channel.bind("new-order-received", function (data) {
+        self.notifications.push(data);
+      });
     },
   },
 };
