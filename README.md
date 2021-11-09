@@ -1,19 +1,16 @@
-# ecommerce-frontend
+Please follow the instructions
 
-## Project setup
 ```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
+step 1: clone this git repository
+step 2: change api url from `src/api/urls.js`
+step 2: change pusher app key in `src/components/AdminNavBar.vue`
+step 3: run command `npm install`
+step 4: run command `npm run serve`
+step 5: Compiles and minifies for production `npm run build`
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+---
+1. All the design related component copied from [tailwindcomponents](https://tailwindcomponents.com)
+2. This app's api can be found in here [Ecommerce Backend](https://github.com/Robiussani152/ecommerce-backend)
+---
+### Regards **[Robius Sani](https://github.com/Robiussani152)**
