@@ -25,6 +25,7 @@
               v-bind:style="{ backgroundImage: 'url(' + product.image + ')' }"
             >
               <button
+                v-if="product.quantity > 0"
                 @click="addToCart(product.id)"
                 type="button"
                 class="
@@ -56,6 +57,12 @@
             <div class="px-5 py-3">
               <h3 class="text-gray-700 uppercase">{{ product.name }}</h3>
               <span class="text-gray-500 mt-2">BDT {{ product.price }}</span>
+              <p
+                v-if="product.quantity <= 0"
+                class="bg-red-200 opacity-50 rounded-full text-center"
+              >
+                Out of stock
+              </p>
             </div>
           </div>
         </div>
