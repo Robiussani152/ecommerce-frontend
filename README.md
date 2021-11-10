@@ -10,7 +10,11 @@ step 5: Compiles and minifies for production `npm run build`
 ```
 
 ---
+
 1. All the design related component copied from [tailwindcomponents](https://tailwindcomponents.com)
 2. This app's api can be found in here [Ecommerce Backend](https://github.com/Robiussani152/ecommerce-backend)
+3. Admin login url: `/admin-login`
+
 ---
+
 ### Regards **[Robius Sani](https://github.com/Robiussani152)**
